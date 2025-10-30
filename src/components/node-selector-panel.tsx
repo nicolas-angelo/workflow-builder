@@ -1,10 +1,20 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { Bot, FileText, GitBranch, Square, Hourglass } from 'lucide-react'
 import { Panel } from '@xyflow/react'
 import { useAuth, SignedIn } from '@clerk/nextjs'
-import { CheckoutButton } from '@clerk/nextjs/experimental'
 import { Button } from '@/components/ui/button'
+
+const NodeSelectorCheckoutButton = dynamic(
+  () =>
+    import('./node-selector-button').then(
+      mod => mod.NodeSelectorCheckoutButton
+    ),
+  {
+    ssr: false,
+  }
+)
 
 const PLAN_ID = 'cplan_34n8ii6YeGkBlQlyMDUdobp1F3I'
 const PLAN_PERIOD = 'month'
@@ -63,32 +73,11 @@ export function NodeSelectorPanel() {
           <div className="flex flex-col gap-2">
             {nodeTypes.map(nodeType =>
               nodeType.premium && !hasPremium ? (
-                <CheckoutButton
-                  checkoutProps={{
-                    portalId: 'clerk-portal',
-                    // portalRoot: document?.body ?? undefined,
-                    onClose: () => {
-                      console.log('Checkout closed')
-                    },
-                  }}
-                  for="user"
-                  key={nodeType.type}
+                <NodeSelectorCheckoutButton
+                  nodeType={nodeType}
                   planId={PLAN_ID}
                   planPeriod={PLAN_PERIOD}
-                >
-                  <Button
-                    className="cursor-grab justify-between text-left"
-                    variant="outline"
-                  >
-                    <span className="flex items-center gap-2">
-                      <nodeType.icon />
-                      {nodeType.label}
-                    </span>
-                    <span className="text-muted-foreground text-xs">
-                      Premium
-                    </span>
-                  </Button>
-                </CheckoutButton>
+                />
               ) : (
                 <Button
                   className="cursor-grab justify-between text-left"
