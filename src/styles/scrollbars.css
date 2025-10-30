@@ -1,0 +1,27 @@
+:root {
+    --scrollbar-width: 8px;
+    --scrollbar-light: var(--muted);
+      --scrollbar-border-light: var(--color-zinc-400);
+      --scrollbar-dark: oklch(0.21 0.01 286);
+      --scrollbar-border-dark: oklch(0.14 0 286);
+  
+      --scrollbar-color: var(--scrollbar-light);
+      --scrollbar-border: var(--scrollbar-border-light);
+  }
+  
+  .dark {
+      --scrollbar-color: var(--scrollbar-dark);
+      --scrollbar-border: var(--scrollbar-border-dark);
+  }
+  
+  ::-webkit-scrollbar {
+      width: var(--scrollbar-width);
+    height: var(--scrollbar-width);
+      border-radius: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-color);
+      border: 2px solid var(--scrollbar-border);
+      border-radius: 8px;
+  }
