@@ -43,15 +43,15 @@ export const WORKFLOW_TEMPLATES: WorkflowTemplate[] = [
   //     'Research the biography of Albert Einstein',
   //   ],
   // },
-  {
-    id: 'demo',
-    name: 'Demo',
-    description: 'A demo workflow',
-    category: 'Private',
-    nodes: DEMO_WORKFLOW.nodes,
-    edges: DEMO_WORKFLOW.edges,
-    suggestions: [],
-  },
+  // {
+  //   id: 'demo',
+  //   name: 'Demo',
+  //   description: 'A demo workflow',
+  //   category: 'Private',
+  //   nodes: DEMO_WORKFLOW.nodes,
+  //   edges: DEMO_WORKFLOW.edges,
+  //   suggestions: [],
+  // },
 ]
 
 export function getTemplateById(id: string): WorkflowTemplate | undefined {
