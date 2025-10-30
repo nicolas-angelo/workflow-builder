@@ -66,7 +66,7 @@ export function NodeSelectorPanel() {
                 <CheckoutButton
                   checkoutProps={{
                     portalId: 'clerk-portal',
-                    portalRoot: document?.body ?? undefined,
+                    // portalRoot: document?.body ?? undefined,
                     onClose: () => {
                       console.log('Checkout closed')
                     },
