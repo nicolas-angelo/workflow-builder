@@ -65,6 +65,7 @@ export function IfElseNode({
         'border-red-500': data.status === 'error',
       })}
       selected={selected}
+      style={{ width: 182 }}
     >
       <div className="col-span-1 flex flex-col gap-2">
         <BaseHandle id="input" position={Position.Top} type="target" />

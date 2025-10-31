@@ -90,6 +90,7 @@ export function AgentNode({
         'border-red-500': data.status === 'error',
       })}
       selected={selected}
+      style={{ width: 182 }}
     >
       <NodeHeader className="m-0">
         <NodeHeaderIcon>

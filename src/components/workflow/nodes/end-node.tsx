@@ -45,6 +45,7 @@ export function EndNode({ selected, data, deletable, id }: EndNodeProps) {
         'border-red-500': data.status === 'error',
       })}
       selected={selected}
+      style={{ width: 182 }}
     >
       <NodeHeader className="m-0">
         <NodeHeaderIcon>

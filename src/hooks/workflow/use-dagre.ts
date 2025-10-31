@@ -1,7 +1,8 @@
 'use client'
 
-import { useCallback } from 'react'
-import { useReactFlow } from '@xyflow/react'
+import { useCallback, useState, useEffect } from 'react'
+import { shallow } from 'zustand/shallow'
+import { useNodesInitialized, useReactFlow, useStore } from '@xyflow/react'
 import { useWorkflow } from '@/hooks/workflow/use-workflow'
 import type { FlowNode, FlowEdge } from '@/lib/workflow/types'
 import dagre from '@dagrejs/dagre'
@@ -18,35 +19,28 @@ const getNodeDimensions = (node: FlowNode) => {
 
 export const getLayoutedElements = (
   nodes: FlowNode[],
-  edges: FlowEdge[],
-  direction = 'TB'
+  edges: FlowEdge[]
 ) => {
-  const isHorizontal = direction === 'LR'
-  dagreGraph.setGraph({ rankdir: direction })
+  dagreGraph.setGraph({ rankdir: 'TB' })
 
+  edges.forEach(edge => dagreGraph.setEdge(edge.source, edge.target))
   nodes.forEach(node => {
     const { nodeWidth, nodeHeight } = getNodeDimensions(node)
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight })
   })
 
-  edges.forEach(edge => {
-    dagreGraph.setEdge(edge.source, edge.target)
-  })
-
   dagre.layout(dagreGraph)
 
   const newNodes = nodes.map(node => {
-    const nodeWithPosition = dagreGraph.node(node.id)
+    const { x, y } = dagreGraph.node(node.id)
     const { nodeWidth, nodeHeight } = getNodeDimensions(node)
     const newNode = {
       ...node,
-      targetPosition: isHorizontal ? 'left' : 'top',
-      sourcePosition: isHorizontal ? 'right' : 'bottom',
-      // We are shifting the dagre node position (anchor=center center) to the top left
-      // so it matches the React Flow node anchor point (top left).
+      targetPosition: 'top',
+      sourcePosition: 'bottom',
       position: {
-        x: nodeWithPosition.x - nodeWidth / 2,
-        y: nodeWithPosition.y - nodeHeight / 2,
+        x: x - nodeWidth / 2,
+        y: y - nodeHeight / 2,
       },
     } as FlowNode
 
@@ -56,11 +50,39 @@ export const getLayoutedElements = (
   return { nodes: newNodes, edges }
 }
 
-// export function useDagre() {
-//   const { nodes, edges } = useWorkflow(store => store.getWorkflowData())
-//   const { fitView } = useReactFlow()
+export function useDagre() {
+  const [viewIsFit, setViewIsFit] = useState(false)
+  const [initialLayoutFinished, setInitialLayoutFinished] = useState(false)
+  const [nodesPositioned, setNodesPositioned] = useState(false)
 
-//   const layout = useCallback(() => {
-//     fitView()
-//   }, [fitView])
-// }
+  const nodesInitialized = useNodesInitialized()
+
+  const store = useWorkflow(
+    store => ({
+      nodes: store.nodes,
+      edges: store.edges,
+      intializeWorkflow: store.initializeWorkflow,
+    }),
+    shallow
+  )
+
+  const { nodes, edges, intializeWorkflow } = store
+  const { fitView } = useReactFlow()
+
+  useEffect(() => {
+    if (nodes[0]?.width) {
+      // if nodes exist and nodes are not positioned
+      if (nodes.length > 0 && !nodesPositioned) {
+        const layouted = getLayoutedElements(nodes, edges)
+        intializeWorkflow({ nodes: layouted.nodes, edges: layouted.edges })
+        setNodesPositioned(true)
+
+        // fit view
+        window.requestAnimationFrame(() => {
+          fitView({ duration: 1000 })
+        })
+        setViewIsFit(true)
+      }
+    }
+  }, [nodesPositioned, nodes, edges, intializeWorkflow, fitView])
+}

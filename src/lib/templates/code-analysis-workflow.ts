@@ -1,10 +1,6 @@
 import type { FlowEdge, FlowNode } from '@/lib/workflow/types'
 
 const position = { x: 0, y: 0 }
-const measured = {
-  width: 182,
-  height: 74,
-}
 
 export const CODE_ANALYSIS_WORKFLOW: {
   nodes: FlowNode[]
@@ -15,7 +11,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'start-node',
       type: 'start',
       position,
-      measured,
       data: {
         sourceType: {
           type: 'text',
@@ -28,7 +23,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'code-analyzer-node',
       type: 'agent',
       position,
-      measured,
       data: {
         name: 'Code Analyzer',
         status: 'idle',
@@ -88,7 +82,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'language-router-node',
       type: 'if-else',
       position,
-      measured,
       data: {
         status: 'idle',
         dynamicSourceHandles: [
@@ -121,7 +114,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'typescript-specialist-node',
       type: 'agent',
       position,
-      measured,
       data: {
         name: 'TypeScript Specialist',
         model: 'gpt-5-nano',
@@ -143,7 +135,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'python-specialist-node',
       type: 'agent',
       position,
-      measured,
       data: {
         name: 'Python Specialist',
         model: 'gpt-5-nano',
@@ -165,7 +156,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'javascript-specialist-node',
       type: 'agent',
       position,
-      measured,
+
       data: {
         name: 'JavaScript Specialist',
         model: 'gpt-5-nano',
@@ -187,7 +178,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'general-specialist-node',
       type: 'agent',
       position,
-      measured,
       data: {
         name: 'General Code Specialist',
         model: 'gpt-5-nano',
@@ -209,7 +199,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'end-node',
       type: 'end',
       position,
-      measured,
       data: {},
       selected: false,
       dragging: false,
@@ -318,15 +307,15 @@ export const CODE_ANALYSIS_WORKFLOW: {
       type: 'status',
       data: {},
     },
-    {
-      id: 'java-to-end',
-      source: 'java-specialist-node',
-      target: 'end-node',
-      sourceHandle: 'result',
-      targetHandle: 'input',
-      type: 'status',
-      data: {},
-    },
+    // {
+    //   id: 'java-to-end',
+    //   source: 'java-specialist-node',
+    //   target: 'end-node',
+    //   sourceHandle: 'result',
+    //   targetHandle: 'input',
+    //   type: 'status',
+    //   data: {},
+    // },
     {
       id: 'general-to-end',
       source: 'general-specialist-node',

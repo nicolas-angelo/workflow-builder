@@ -38,7 +38,7 @@ export function Canvas({ nodeTypes, edgeTypes }: CanvasProps) {
     <ReactFlow
       colorMode={theme === 'dark' ? 'dark' : 'light'}
       connectionLineComponent={ConnectionLine as any}
-      connectionLineType={ConnectionLineType.SmoothStep}
+      connectionLineType={ConnectionLineType.Bezier}
       edges={edges}
       edgesFocusable={!isLoading}
       edgeTypes={edgeTypes}

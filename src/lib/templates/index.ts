@@ -30,10 +30,6 @@ export const WORKFLOW_TEMPLATES: WorkflowTemplate[] = [
             type: 'text',
           },
         },
-        measured: {
-          width: 163,
-          height: 58,
-        },
         selected: false,
         dragging: false,
       },
@@ -42,10 +38,6 @@ export const WORKFLOW_TEMPLATES: WorkflowTemplate[] = [
         type: 'end',
         position,
         data: {},
-        measured: {
-          width: 181,
-          height: 58,
-        },
         selected: false,
         dragging: false,
       },

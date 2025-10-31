@@ -1,6 +1,6 @@
 import { type Node, type NodeProps, Position } from '@xyflow/react'
 import { Play } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { useNodes } from '@xyflow/react'
 import { BaseHandle } from '@/components/workflow/primitives/base-handle'
 import { BaseNode } from '@/components/workflow/primitives/base-node'
 import {
@@ -16,6 +16,7 @@ import type {
   ValidationError,
 } from '@/lib/workflow/types'
 import { useWorkflow } from '@/hooks/workflow/use-workflow'
+import { cn } from '@/lib/utils'
 
 export type StartNodeData = {
   status?: NodeStatus
@@ -48,6 +49,7 @@ export function StartNode({ id, selected, data }: StartNodeProps) {
         'border-red-500': data.status === 'error',
       })}
       selected={selected}
+      style={{ width: 182 }}
     >
       <NodeHeader className="m-0">
         <NodeHeaderIcon>
