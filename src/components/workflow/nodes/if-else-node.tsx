@@ -52,20 +52,11 @@ export function IfElseNode({
   id,
 }: IfElseNodeProps) {
   const deleteNode = useWorkflow(state => state.deleteNode)
-  const updateNodeWidth = useWorkflow(state => state.updateNodeWidth)
-  const node = useWorkflow(state => state.getNodeById(id))
 
   const validationErrors =
     data.validationErrors?.map(error => ({
       message: error.message,
     })) || []
-
-  useEffect(() => {
-    if (!node) return
-    const conditions = data.dynamicSourceHandles.length
-    const width = conditions * 75 + 209
-    updateNodeWidth(id, width)
-  }, [data.dynamicSourceHandles, node?.width])
 
   return (
     <BaseNode
@@ -100,34 +91,34 @@ export function IfElseNode({
         </NodeHeaderActions>
       </NodeHeader>
       <Separator />
-      <div className="flex w-full pt-2 text-sm">
-        <div className="flex w-full justify-around gap-2">
+      <div className="flex w-full justify-around pt-2 text-sm">
+        <div className="flex">
           {data.dynamicSourceHandles.map(handle => {
             const displayText = handle.label || handle.condition || '-'
             const isPlaceholder = !handle.label && !handle.condition
             return (
-              <LabeledHandle
+              <BaseHandle
                 id={handle.id}
                 key={handle.id}
-                labelClassName={cn(
-                  'max-w-56 truncate',
-                  isPlaceholder ? 'text-muted-foreground' : ''
-                )}
+                // labelClassName={cn(
+                //   'max-w-56 truncate',
+                //   isPlaceholder ? 'text-muted-foreground' : ''
+                // )}
                 position={Position.Bottom}
-                title={displayText}
+                title={''}
                 type="source"
               />
             )
           })}
-          <LabeledHandle
-            id="else"
-            labelClassName="max-w-32 truncate"
-            position={Position.Bottom}
-            title="Else"
-            type="source"
-          />
         </div>
       </div>
+      <LabeledHandle
+        id="else"
+        labelClassName="max-w-32 truncate ml-auto"
+        position={Position.Right}
+        title="Else"
+        type="source"
+      />
     </BaseNode>
   )
 }

@@ -33,13 +33,13 @@ export function StatusEdge({
   data,
   selected,
 }: StatusEdgeProps) {
-  const [edgePath] = getBezierPath({
+  const [edgePath] = getStraightPath({
     sourceX,
     sourceY,
-    sourcePosition,
+    // sourcePosition,
+    // targetPosition,
     targetX,
     targetY,
-    targetPosition,
   })
 
   const validationErrors = data?.validationErrors || []

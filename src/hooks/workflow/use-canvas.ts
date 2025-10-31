@@ -1,9 +1,14 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { DragEvent } from 'react'
 import { shallow } from 'zustand/shallow'
-import { useReactFlow, useOnSelectionChange } from '@xyflow/react'
+import {
+  useReactFlow,
+  useOnSelectionChange,
+  useNodesInitialized,
+} from '@xyflow/react'
+import { getLayoutedElements } from '@/hooks/workflow/use-dagre'
 import { useWorkflow } from '@/hooks/workflow/use-workflow'
 import type { FlowNode } from '@/lib/workflow/types'
 
@@ -67,20 +72,50 @@ export function useCanvasActions() {
 }
 
 export function useCanvas() {
+  const nodesInitialized = useNodesInitialized()
+  const [initialLayoutFinished, setInitialLayoutFinished] = useState(false)
   const [selectedNodes, setSelectedNodes] = useState<FlowNode[]>([])
+
   const store = useWorkflow(
     store => ({
       nodes: store.nodes,
       edges: store.edges,
+      intializeWorkflow: store.initializeWorkflow,
     }),
     shallow
   )
+
+  const { nodes, edges, intializeWorkflow } = store
+  const { fitView } = useReactFlow()
+
+  const onLayout = useCallback(() => {
+    const layouted = getLayoutedElements(nodes, edges)
+
+    intializeWorkflow({ nodes: layouted.nodes, edges: layouted.edges })
+
+    window.requestAnimationFrame(async () => {
+      await fitView({ duration: 1000 })
+      if (!initialLayoutFinished) {
+        setInitialLayoutFinished(true)
+      }
+    })
+  }, [nodes, edges, intializeWorkflow, initialLayoutFinished])
 
   useOnSelectionChange({
     onChange: ({ nodes }) => {
       setSelectedNodes(nodes as FlowNode[])
     },
   })
+
+  useEffect(() => {
+    if (nodesInitialized && !initialLayoutFinished) {
+      onLayout()
+    }
+  }, [nodesInitialized, initialLayoutFinished])
+
+  useEffect(() => {
+    console.log('nodes', nodes.length)
+  }, [nodes])
 
   return {
     nodes: store.nodes,

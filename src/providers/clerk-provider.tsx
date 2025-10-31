@@ -71,9 +71,9 @@ export function ClerkProvider({
         env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL
       }
       signInUrl={env.NEXT_PUBLIC_CLERK_SIGN_IN_URL}
-      signUpFallbackRedirectUrl={
-        env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL
-      }
+      // signUpFallbackRedirectUrl={
+      //   env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL
+      // }
       supportEmail="nicolas@faststack.ai"
     >
       {children}
