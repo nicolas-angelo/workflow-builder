@@ -10,13 +10,15 @@ const sharedSchema = z.object({
 
 const clientSchema = z.object({
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+  NEXT_PUBLIC_CLERK_PRO_PLAN_ID: z.string(),
   NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string(),
   NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: z.string(),
-  NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL: z.string(),
 })
 
 const serverSchema = z.object({
   CLERK_SECRET_KEY: z.string(),
+  TRIGGER_SECRET_KEY: z.string(),
+  TRIGGER_PROJECT_ID: z.string(),
 })
 
 const schema = z.object({
@@ -38,12 +40,12 @@ export const env = createEnv({
     ...runtimeEnv,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_CLERK_PRO_PLAN_ID:
+      process.env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID,
     NEXT_PUBLIC_CLERK_SIGN_IN_URL:
       process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
     NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL:
       process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
-    NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL:
-      process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL,
   },
   emptyStringAsUndefined: true,
   isServer: typeof window === 'undefined',

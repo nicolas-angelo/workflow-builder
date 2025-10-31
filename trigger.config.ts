@@ -1,8 +1,9 @@
 import { defineConfig } from '@trigger.dev/sdk/v3'
 import { syncVercelEnvVars } from '@trigger.dev/build/extensions/core'
+import { env } from '@/env'
 
 export default defineConfig({
-  project: 'proj_abnqzvpabdetqniushdc',
+  project: env.TRIGGER_PROJECT_ID,
   runtime: 'node',
   logLevel: 'log',
   maxDuration: 3600,

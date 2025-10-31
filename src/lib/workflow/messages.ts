@@ -13,7 +13,7 @@ import type { FlowNode, NodeStatus } from '@/lib/workflow/types'
 
 type WorkflowAIMetadata = Record<string, unknown>
 
-type WorkflowAIDataPart = {
+export type WorkflowAIDataPart = {
   'node-execution-status': {
     nodeId: string
     nodeType: FlowNode['type']

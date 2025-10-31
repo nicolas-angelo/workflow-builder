@@ -65,7 +65,7 @@ export function StartNode({ id, selected, data }: StartNodeProps) {
       <BaseHandle
         id="message"
         isConnectable={isHandleConnectable}
-        position={Position.Right}
+        position={Position.Bottom}
         type="source"
       />
     </BaseNode>

@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { SchemaEditorDialog } from '@/components/editor/schema-editor'
 import { SchemaPreview } from '@/components/editor/schema-preview'
-import { ModelSelector } from '@/components/model-selector'
+import { ModelSelector } from '@/components/workflow/model-selector'
 import { BaseHandle } from '@/components/workflow/primitives/base-handle'
 import { BaseNode } from '@/components/workflow/primitives/base-node'
 import {
@@ -39,7 +39,7 @@ import type {
 } from '@/lib/workflow/types'
 import { useWorkflow } from '@/hooks/workflow/use-workflow'
 import { idToReadableText } from '@/lib/id-to-readable-text'
-import type { workflowModelID } from '../../lib/workflow/models'
+import type { workflowModelID } from '@/lib/workflow/models'
 
 export type AgentNodeData = {
   name: string
@@ -112,21 +112,21 @@ export function AgentNode({
           )}
         </NodeHeaderActions>
       </NodeHeader>
-      <div className="text max-w-[200px] truncate p-2 pt-0 pl-4 text-left text-muted-foreground">
+      <div className="max-w-[200px] truncate p-2 pt-0 pl-4 text-left text-muted-foreground text-sm">
         {data.name}
       </div>
 
       <BaseHandle
         id="prompt"
         isConnectable={isTargetConnectable}
-        position={Position.Left}
+        position={Position.Top}
         type="target"
       />
 
       <BaseHandle
         id="result"
         isConnectable={isSourceConnectable}
-        position={Position.Right}
+        position={Position.Bottom}
         type="source"
       />
     </BaseNode>

@@ -71,7 +71,7 @@ export function EndNode({ selected, data, deletable, id }: EndNodeProps) {
       <BaseHandle
         id="input"
         isConnectable={isTargetConnectable}
-        position={Position.Left}
+        position={Position.Top}
         type="target"
       />
     </BaseNode>

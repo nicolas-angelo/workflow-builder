@@ -1,11 +1,11 @@
 import type { JSONSchema7 } from 'ai'
-import type { AgentNode } from '@/components/workflow/agent-node'
-import type { EndNode } from '@/components/workflow/end-node'
-import type { IfElseNode } from '@/components/workflow/if-else-node'
-import type { NoteNode } from '@/components/workflow/note-node'
-import type { StartNode } from '@/components/workflow/start-node'
-import type { StatusEdge } from '@/components/workflow/status-edge'
-import type { WaitNode } from '@/components/workflow/wait-node'
+import type { AgentNode } from '@/components/workflow/nodes/agent-node'
+import type { EndNode } from '@/components/workflow/nodes/end-node'
+import type { IfElseNode } from '@/components/workflow/nodes/if-else-node'
+import type { NoteNode } from '@/components/workflow/nodes/note-node'
+import type { StartNode } from '@/components/workflow/nodes/start-node'
+import type { StatusEdge } from '@/components/workflow/edges/status-edge'
+import type { WaitNode } from '@/components/workflow/nodes/wait-node'
 
 // Nodes
 

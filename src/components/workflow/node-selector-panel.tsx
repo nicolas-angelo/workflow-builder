@@ -5,6 +5,7 @@ import { Bot, FileText, GitBranch, Square, Hourglass } from 'lucide-react'
 import { Panel } from '@xyflow/react'
 import { useAuth, SignedIn } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
+import { env } from '@/env'
 
 const NodeSelectorCheckoutButton = dynamic(
   () =>
@@ -16,7 +17,7 @@ const NodeSelectorCheckoutButton = dynamic(
   }
 )
 
-const PLAN_ID = 'cplan_34n8ii6YeGkBlQlyMDUdobp1F3I'
+const PLAN_ID = env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID
 const PLAN_PERIOD = 'month'
 
 const nodeTypes = [
@@ -74,6 +75,7 @@ export function NodeSelectorPanel() {
             {nodeTypes.map(nodeType =>
               nodeType.premium && !hasPremium ? (
                 <NodeSelectorCheckoutButton
+                  key={nodeType.type}
                   nodeType={nodeType}
                   planId={PLAN_ID}
                   planPeriod={PLAN_PERIOD}

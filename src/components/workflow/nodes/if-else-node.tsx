@@ -1,8 +1,12 @@
+'use client'
+
+import { useEffect } from 'react'
 import {
   type Node,
   type NodeProps,
   Position,
   useUpdateNodeInternals,
+  useReactFlow,
 } from '@xyflow/react'
 import { GitBranch, Plus, Trash } from 'lucide-react'
 import { nanoid } from 'nanoid'
@@ -13,6 +17,7 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { ConditionEditor } from '@/components/editor/condition-editor'
 import { BaseNode } from '@/components/workflow/primitives/base-node'
+import { BaseHandle } from '@/components/workflow/primitives/base-handle'
 import { LabeledHandle } from '@/components/workflow/primitives/labeled-handle'
 import {
   NodeHeader,
@@ -47,11 +52,20 @@ export function IfElseNode({
   id,
 }: IfElseNodeProps) {
   const deleteNode = useWorkflow(state => state.deleteNode)
+  const updateNodeWidth = useWorkflow(state => state.updateNodeWidth)
+  const node = useWorkflow(state => state.getNodeById(id))
 
   const validationErrors =
     data.validationErrors?.map(error => ({
       message: error.message,
     })) || []
+
+  useEffect(() => {
+    if (!node) return
+    const conditions = data.dynamicSourceHandles.length
+    const width = conditions * 75 + 209
+    updateNodeWidth(id, width)
+  }, [data.dynamicSourceHandles, node?.width])
 
   return (
     <BaseNode
@@ -61,6 +75,9 @@ export function IfElseNode({
       })}
       selected={selected}
     >
+      <div className="col-span-1 flex flex-col gap-2">
+        <BaseHandle id="input" position={Position.Top} type="target" />
+      </div>
       <NodeHeader className="m-0">
         <NodeHeaderIcon>
           <GitBranch />
@@ -83,16 +100,8 @@ export function IfElseNode({
         </NodeHeaderActions>
       </NodeHeader>
       <Separator />
-      <div className="grid grid-cols-3 gap-2 pt-2 pb-4 text-sm">
-        <div className="col-span-1 flex flex-col gap-2">
-          <LabeledHandle
-            id="input"
-            position={Position.Left}
-            title="Input"
-            type="target"
-          />
-        </div>
-        <div className="col-span-2 flex flex-col gap-2 justify-self-end">
+      <div className="flex w-full pt-2 text-sm">
+        <div className="flex w-full justify-around gap-2">
           {data.dynamicSourceHandles.map(handle => {
             const displayText = handle.label || handle.condition || '-'
             const isPlaceholder = !handle.label && !handle.condition
@@ -104,7 +113,7 @@ export function IfElseNode({
                   'max-w-56 truncate',
                   isPlaceholder ? 'text-muted-foreground' : ''
                 )}
-                position={Position.Right}
+                position={Position.Bottom}
                 title={displayText}
                 type="source"
               />
@@ -113,7 +122,7 @@ export function IfElseNode({
           <LabeledHandle
             id="else"
             labelClassName="max-w-32 truncate"
-            position={Position.Right}
+            position={Position.Bottom}
             title="Else"
             type="source"
           />

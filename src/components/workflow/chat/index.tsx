@@ -9,7 +9,7 @@ import {
   AppHeaderIcon,
   AppHeaderSeparator,
   AppHeaderTitle,
-} from '@/components/app-header'
+} from '@/components/workflow/app-header'
 import {
   NodeExecutionStatus,
   NodeExecutionStatusBadge,
@@ -18,8 +18,7 @@ import {
   NodeExecutionStatusHeader,
   NodeExecutionStatusIcon,
   NodeExecutionStatusType,
-} from '@/components/node-execution'
-import { getTemplateById } from '@/lib/templates'
+} from '@/components/workflow/node-execution'
 import type { WorkflowUIMessage } from '@/lib/workflow/messages'
 import { useWorkflow } from '@/hooks/workflow/use-workflow'
 import {
@@ -28,7 +27,7 @@ import {
   ChatInputGroupAddon,
   ChatInputSubmitButton,
   useChatInput,
-} from '@/components/ui/chat-input'
+} from '@/components/workflow/chat/chat-input'
 import {
   ChatMessage,
   ChatMessageAction,
@@ -42,25 +41,26 @@ import {
   ChatMessageHeader,
   ChatMessageMarkdown,
   ChatMessageTimestamp,
-} from '@/components/ui/chat-message'
+} from '@/components/workflow/chat/chat-message'
 import {
   ChatMessageArea,
   ChatMessageAreaContent,
   ChatMessageAreaScrollButton,
-} from '@/components/ui/chat-message-area'
+} from '@/components/workflow/chat/chat-message-area'
 import {
   ChatSuggestion,
   ChatSuggestions,
   ChatSuggestionsList,
   ChatSuggestionsTitle,
-} from '@/components/ui/chat-suggestions'
+} from '@/components/workflow/chat/chat-suggestions'
 import {
   ToolInvocation,
   ToolInvocationContentCollapsible,
   ToolInvocationHeader,
   ToolInvocationName,
   ToolInvocationRawData,
-} from '@/components/ui/tool-invocation'
+} from '@/components/workflow/chat/tool-invocation'
+import { useTemplates } from '@/components/workflow/templates'
 
 interface ChatHeaderProps {
   onReset?: () => void
@@ -97,7 +97,6 @@ interface ChatProps extends ComponentPropsWithoutRef<'div'> {
   status: ReturnOfUseChat['status']
   stop: ReturnOfUseChat['stop']
   setMessages: ReturnOfUseChat['setMessages']
-  selectedTemplateId?: string
 }
 
 export function Chat({
@@ -107,7 +106,6 @@ export function Chat({
   status,
   stop,
   setMessages,
-  selectedTemplateId,
   ...props
 }: ChatProps) {
   const getWorkflowData = useWorkflow(store => store.getWorkflowData)
@@ -117,10 +115,6 @@ export function Chat({
   const isLoading = status === 'streaming' || status === 'submitted'
   const hasValidationErrors = !validationState.valid
   const isDisabled = hasValidationErrors
-
-  const currentTemplate = selectedTemplateId
-    ? getTemplateById(selectedTemplateId)
-    : undefined
 
   const { value, onChange, handleSubmit } = useChatInput({
     onSubmit: parsedValue => {
@@ -176,10 +170,7 @@ export function Chat({
       <ChatMessageArea className="px-2">
         <ChatMessageAreaContent className="pt-4">
           {messages.length === 0 ? (
-            <NoChatMessages
-              onSuggestionClick={handleSuggestionClick}
-              template={currentTemplate}
-            />
+            <NoChatMessages onSuggestionClick={handleSuggestionClick} />
           ) : (
             messages.map(message => {
               const userName =
@@ -371,16 +362,16 @@ export function Chat({
 }
 
 function NoChatMessages({
-  template,
   onSuggestionClick,
 }: {
-  template?: ReturnType<typeof getTemplateById>
   onSuggestionClick: (suggestion: string) => void
 }) {
+  const { selectedTemplate: template } = useTemplates()
+
   if (!template || template.suggestions.length === 0) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-2 p-2">
-        <p className="text-lg text-muted-foreground">No chat messages</p>
+        <p className="text-lg text-muted-foreground">No messages</p>
       </div>
     )
   }
