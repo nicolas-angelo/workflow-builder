@@ -1,30 +1,21 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest, NextFetchEvent } from 'next/server'
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { env } from '@/env'
 
 const isPublicRoute = createRouteMatcher(['/auth(.*)', '/api(.*)'])
 
 export default async (req: NextRequest, event: NextFetchEvent) => {
-  return clerkMiddleware(
-    async (auth, req) => {
-      if (isPublicRoute(req)) {
-        return NextResponse.next()
-      }
-      const { userId, redirectToSignIn } = await auth()
-      if (!userId) {
-        return redirectToSignIn()
-      }
-
+  return clerkMiddleware(async (auth, req) => {
+    if (isPublicRoute(req)) {
       return NextResponse.next()
-    },
-    {
-      debug: false,
-      signInUrl: env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
-      afterSignInUrl: env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
-      afterSignUpUrl: env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL,
     }
-  )(req, event)
+    const { userId, redirectToSignIn } = await auth()
+    if (!userId) {
+      return redirectToSignIn()
+    }
+
+    return NextResponse.next()
+  })(req, event)
 }
 
 export const config = {

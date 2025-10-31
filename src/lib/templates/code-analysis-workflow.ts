@@ -1,6 +1,10 @@
 import type { FlowEdge, FlowNode } from '@/lib/workflow/types'
 
 const position = { x: 0, y: 0 }
+const measured = {
+  width: 182,
+  height: 74,
+}
 
 export const CODE_ANALYSIS_WORKFLOW: {
   nodes: FlowNode[]
@@ -11,14 +15,11 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'start-node',
       type: 'start',
       position,
+      measured,
       data: {
         sourceType: {
           type: 'text',
         },
-      },
-      measured: {
-        width: 163,
-        height: 58,
       },
       selected: false,
       dragging: false,
@@ -27,6 +28,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'code-analyzer-node',
       type: 'agent',
       position,
+      measured,
       data: {
         name: 'Code Analyzer',
         status: 'idle',
@@ -79,10 +81,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
           },
         },
       },
-      measured: {
-        width: 182,
-        height: 74,
-      },
       selected: false,
       dragging: false,
     },
@@ -90,6 +88,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'language-router-node',
       type: 'if-else',
       position,
+      measured,
       data: {
         status: 'idle',
         dynamicSourceHandles: [
@@ -115,10 +114,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
           },
         ],
       },
-      measured: {
-        width: 189,
-        height: 199,
-      },
       selected: false,
       dragging: false,
     },
@@ -126,6 +121,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'typescript-specialist-node',
       type: 'agent',
       position,
+      measured,
       data: {
         name: 'TypeScript Specialist',
         model: 'gpt-5-nano',
@@ -140,10 +136,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
         excludeFromConversation: false,
         maxSteps: 5,
       },
-      measured: {
-        width: 182,
-        height: 74,
-      },
       selected: false,
       dragging: false,
     },
@@ -151,6 +143,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'python-specialist-node',
       type: 'agent',
       position,
+      measured,
       data: {
         name: 'Python Specialist',
         model: 'gpt-5-nano',
@@ -165,10 +158,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
         excludeFromConversation: false,
         maxSteps: 5,
       },
-      measured: {
-        width: 182,
-        height: 74,
-      },
       selected: false,
       dragging: false,
     },
@@ -176,6 +165,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'javascript-specialist-node',
       type: 'agent',
       position,
+      measured,
       data: {
         name: 'JavaScript Specialist',
         model: 'gpt-5-nano',
@@ -190,35 +180,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
         excludeFromConversation: false,
         maxSteps: 5,
       },
-      measured: {
-        width: 182,
-        height: 74,
-      },
-      selected: false,
-      dragging: false,
-    },
-    {
-      id: 'java-specialist-node',
-      type: 'agent',
-      position,
-      data: {
-        name: 'Java Specialist',
-        model: 'gpt-5-nano',
-        systemPrompt:
-          'You are a Java expert. Analyze the provided Java code and provide detailed feedback including:\n\n1. Code quality assessment\n2. Object-oriented design patterns\n3. Performance considerations\n4. Memory management\n5. Exception handling\n6. Suggested improvements\n\nFocus on Java-specific patterns, JVM considerations, and enterprise Java best practices.\n\nBe concise in your output or response.',
-        selectedTools: [],
-        sourceType: {
-          type: 'text',
-        },
-        status: 'idle',
-        hideResponseInChat: false,
-        excludeFromConversation: false,
-        maxSteps: 5,
-      },
-      measured: {
-        width: 182,
-        height: 74,
-      },
       selected: false,
       dragging: false,
     },
@@ -226,6 +187,7 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'general-specialist-node',
       type: 'agent',
       position,
+      measured,
       data: {
         name: 'General Code Specialist',
         model: 'gpt-5-nano',
@@ -240,10 +202,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
         excludeFromConversation: false,
         maxSteps: 5,
       },
-      measured: {
-        width: 200,
-        height: 74,
-      },
       selected: false,
       dragging: false,
     },
@@ -251,11 +209,8 @@ export const CODE_ANALYSIS_WORKFLOW: {
       id: 'end-node',
       type: 'end',
       position,
+      measured,
       data: {},
-      measured: {
-        width: 181,
-        height: 58,
-      },
       selected: false,
       dragging: false,
     },
@@ -323,15 +278,6 @@ export const CODE_ANALYSIS_WORKFLOW: {
       source: 'language-router-node',
       target: 'javascript-specialist-node',
       sourceHandle: 'javascript-route',
-      targetHandle: 'prompt',
-      type: 'status',
-      data: {},
-    },
-    {
-      id: 'router-to-java',
-      source: 'language-router-node',
-      target: 'java-specialist-node',
-      sourceHandle: 'java-route',
       targetHandle: 'prompt',
       type: 'status',
       data: {},

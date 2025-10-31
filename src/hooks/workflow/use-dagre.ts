@@ -11,7 +11,7 @@ const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(
 )
 
 const getNodeDimensions = (node: FlowNode) => {
-  const nodeWidth = node.measured?.width ?? 163
+  const nodeWidth = 182
   const nodeHeight = node.measured?.height ?? 58
   return { nodeWidth, nodeHeight }
 }

@@ -33,11 +33,11 @@ export function StatusEdge({
   data,
   selected,
 }: StatusEdgeProps) {
-  const [edgePath] = getStraightPath({
+  const [edgePath] = getBezierPath({
     sourceX,
     sourceY,
-    // sourcePosition,
-    // targetPosition,
+    sourcePosition,
+    targetPosition,
     targetX,
     targetY,
   })
